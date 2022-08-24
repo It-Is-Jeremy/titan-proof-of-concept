@@ -25,7 +25,11 @@ source-repository head
 
 library
   exposed-modules:
+      Arithmetic
+      Asset
+      DataPoints
       Lib
+      Market
   other-modules:
       Paths_titan_proof_of_concept
   hs-source-dirs:
@@ -33,6 +37,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , hspec
   default-language: Haskell2010
 
 executable titan-proof-of-concept-exe
@@ -44,6 +49,7 @@ executable titan-proof-of-concept-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , hspec
     , titan-proof-of-concept
   default-language: Haskell2010
 
@@ -51,11 +57,13 @@ test-suite titan-proof-of-concept-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      ArithmeticSpec
       Paths_titan_proof_of_concept
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , hspec
     , titan-proof-of-concept
   default-language: Haskell2010
