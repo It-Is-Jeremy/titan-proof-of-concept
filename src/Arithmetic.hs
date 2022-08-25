@@ -2,6 +2,8 @@
 
 module Arithmetic where
 
+import Data.Maybe
+
 import DataPoints
 
 class Mean item where
@@ -22,3 +24,22 @@ getSumOfEodSeries [] = 0
 
 instance Mean [EndOfDayData] where
     mean eodItems = getSumOfEodSeries eodItems/((fromIntegral $ length eodItems) * 4)
+
+class SimpleMovingAverage item where
+  sma :: item -> Double
+
+
+sumClosePricePoint :: [EndOfDayData] -> Double
+sumClosePricePoint [] = 0
+sumClosePricePoint (x:xs) = close x + sumClosePricePoint xs
+
+instance SimpleMovingAverage [EndOfDayData] where
+  sma dataPoints = sumClosePricePoint dataPoints/(fromIntegral $ length dataPoints)
+
+class ExponentialMovingAverage item where
+  ema :: item -> Integer -> Maybe Double
+
+instance ExponentialMovingAverage [EndOfDayData] where
+  ema items n
+    | (length items) == (fromIntegral $ n * 2) = Just 0
+    | otherwise = Nothing

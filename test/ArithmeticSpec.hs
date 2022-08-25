@@ -21,3 +21,11 @@ spec = do
       mean getEodExample `shouldBe` 25
     it "calculates the mean price of a series of end of day data points" $ do
       mean getEodSeries `shouldBe` 30
+  describe "Simple Moving Average" $ do
+    it "calculates the sma of an end of day series" $ do
+      sma getEodSeries `shouldBe` 30
+  describe "Exponential Moving Average" $ do
+    it "returns Nothing when there are insufficient Elements" $ do
+      ema getEodSeries 2 `shouldBe` Nothing
+    it "does not return Nothing when there are sufficient Elements" $ do
+      ema getEodSeries 1 `shouldNotBe` Nothing
