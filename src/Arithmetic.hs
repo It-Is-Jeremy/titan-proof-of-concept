@@ -21,4 +21,4 @@ getSumOfEodSeries (x:xs) = Arithmetic.sum x + getSumOfEodSeries xs
 getSumOfEodSeries [] = 0
 
 instance Mean [EndOfDayData] where
-  mean eodItems = (getSumOfEodSeries eodItems)/((fromIntegral $ length eodItems) * 4)
+    mean eodItems = getSumOfEodSeries eodItems/((fromIntegral $ length eodItems) * 4)
