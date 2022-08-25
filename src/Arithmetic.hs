@@ -37,9 +37,20 @@ instance SimpleMovingAverage [EndOfDayData] where
   sma dataPoints = sumClosePricePoint dataPoints/(fromIntegral $ length dataPoints)
 
 class ExponentialMovingAverage item where
-  ema :: item -> Integer -> Maybe Double
+  ema :: item -> Int -> Maybe Double
 
 instance ExponentialMovingAverage [EndOfDayData] where
-  ema items n
-    | (length items) >= (fromIntegral $ n * 2) = Just 0
-    | otherwise = Nothing
+  ema items numberOfDays
+      | (length items) < (fromIntegral $ numberOfDays * 2) = Nothing
+      | otherwise = Just $ innerEma series initialEma (emaMultiplier numberOfDays)
+          where
+            series = (drop (numberOfDays+1) (drop ((length items) - numberOfDays*2) items))
+            initialEma = (sma (take numberOfDays (drop ((length items) - numberOfDays*2) items)))
+            
+
+emaMultiplier :: Int -> Double
+emaMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
+
+innerEma :: [EndOfDayData] -> Double -> Double -> Double
+innerEma (x:[]) previousEma multiplier = (multiplier * close x) + (previousEma * (1 - multiplier))
+innerEma (x:xs) previousEma multiplier = innerEma xs ((multiplier * close x) + (previousEma * (1 - multiplier))) multiplier

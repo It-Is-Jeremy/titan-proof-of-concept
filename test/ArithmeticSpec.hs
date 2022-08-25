@@ -40,4 +40,4 @@ spec = do
     it "does not return Nothing when there are sufficient Elements" $ do
       ema getEodSeries 1 `shouldNotBe` Nothing
     it "calculates the EMA given a series of sufficient length" $ do
-      ema getEodSeries 5 `shouldBe` Just 10
+      ema getEodSeries 5 `shouldBe` Just 23.95061728395062
