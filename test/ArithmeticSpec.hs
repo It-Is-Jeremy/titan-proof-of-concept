@@ -12,7 +12,7 @@ getEodExample :: EndOfDayData
 getEodExample = createEodWithPriceOf 10 20 30 40
 
 getEodSeries  :: [EndOfDayData]
-getEodSeries = [(createEodWithPriceOf 20 20 20 20), (createEodWithPriceOf 40 40 40 40)]
+getEodSeries = [(createEodWithPriceOf 20 20 20 20), (createEodWithPriceOf 20 20 20 20), (createEodWithPriceOf 40 40 40 40)]
 
 spec :: Spec
 spec = do
@@ -20,10 +20,10 @@ spec = do
     it "calculates the mean of an end of day data point" $ do
       mean getEodExample `shouldBe` 25
     it "calculates the mean price of a series of end of day data points" $ do
-      mean getEodSeries `shouldBe` 30
+      mean getEodSeries `shouldBe` 26.666666666666668
   describe "Simple Moving Average" $ do
     it "calculates the sma of an end of day series" $ do
-      sma getEodSeries `shouldBe` 30
+      sma getEodSeries `shouldBe` 26.666666666666668
   describe "Exponential Moving Average" $ do
     it "returns Nothing when there are insufficient Elements" $ do
       ema getEodSeries 2 `shouldBe` Nothing

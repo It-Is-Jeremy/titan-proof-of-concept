@@ -41,5 +41,5 @@ class ExponentialMovingAverage item where
 
 instance ExponentialMovingAverage [EndOfDayData] where
   ema items n
-    | (length items) == (fromIntegral $ n * 2) = Just 0
+    | (length items) >= (fromIntegral $ n * 2) = Just 0
     | otherwise = Nothing
