@@ -38,15 +38,15 @@ class ExponentialMovingAverage item where
   emaForSeries :: item -> Int -> Maybe Double
 
 getSublistForEma :: [EndOfDayData] -> Int -> [EndOfDayData]
-getSublistForEma items numberOfDays = (drop ((length items) - numberOfDays*2) items)
+getSublistForEma items numberOfDays = drop (length items - numberOfDays*2) items
 
 instance ExponentialMovingAverage [EndOfDayData] where
   emaForSeries items numberOfDays
-      | (length items) < (fromIntegral $ numberOfDays * 2) = Nothing
-      | otherwise = (generateEma series initialEma (calculateMultiplier numberOfDays))
+      | length items < (fromIntegral $ numberOfDays * 2) = Nothing
+      | otherwise = generateEma series initialEma $ calculateMultiplier numberOfDays
           where
             series = drop (numberOfDays + 1) $ getSublistForEma items numberOfDays
-            initialEma = (sma (take numberOfDays $ getSublistForEma items numberOfDays))
+            initialEma = sma $ take numberOfDays $ getSublistForEma items numberOfDays
 
 calculateMultiplier :: Int -> Double
 calculateMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
