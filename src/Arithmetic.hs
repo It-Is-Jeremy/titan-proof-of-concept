@@ -54,4 +54,4 @@ generateEma (x:[]) previousEma multiplier = Just $ ema x previousEma multiplier
 generateEma (x:xs) previousEma multiplier = generateEma xs (ema x previousEma multiplier) multiplier
 
 ema :: EndOfDayData -> Double -> Double -> Double
-ema dataPoint previousEma multiplier = ((multiplier * close dataPoint) + (previousEma * (1 - multiplier)))
+ema dataPoint prevEma multiplier = multiplier * close dataPoint + prevEma * (1 - multiplier)
