@@ -35,20 +35,20 @@ instance SimpleMovingAverage [EndOfDayData] where
   sma dataPoints = sumClosePricePoint dataPoints/(fromIntegral $ length dataPoints)
 
 class ExponentialMovingAverage item where
-  ema :: item -> Int -> Maybe Double
+  emaForSeries :: item -> Int -> Maybe Double
 
 instance ExponentialMovingAverage [EndOfDayData] where
-  ema items numberOfDays
+  emaForSeries items numberOfDays
       | (length items) < (fromIntegral $ numberOfDays * 2) = Nothing
-      | otherwise = (innerEma series initialEma (emaMultiplier numberOfDays))
+      | otherwise = (generateEma series initialEma (calculateMultiplier numberOfDays))
           where
             series = (drop (numberOfDays + 1) (drop ((length items) - numberOfDays*2) items))
             initialEma = (sma (take numberOfDays (drop ((length items) - numberOfDays*2) items)))
 
-emaMultiplier :: Int -> Double
-emaMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
+calculateMultiplier :: Int -> Double
+calculateMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
 
-innerEma :: [EndOfDayData] -> Double -> Double -> Maybe Double
-innerEma [] _ _ = Just 0
-innerEma (x:[]) previousEma multiplier = Just $ (multiplier * close x) + (previousEma * (1 - multiplier))
-innerEma (x:xs) previousEma multiplier = innerEma xs ((multiplier * close x) + (previousEma * (1 - multiplier))) multiplier
+generateEma :: [EndOfDayData] -> Double -> Double -> Maybe Double
+generateEma [] _ _ = Just 0
+generateEma (x:[]) previousEma multiplier = Just $ (multiplier * close x) + (previousEma * (1 - multiplier))
+generateEma (x:xs) previousEma multiplier = generateEma xs ((multiplier * close x) + (previousEma * (1 - multiplier))) multiplier

@@ -36,8 +36,8 @@ spec = do
       sma getEodSeries `shouldBe` 30
   describe "Exponential Moving Average" $ do
     it "returns Nothing when there are insufficient Elements" $ do
-      ema getEodSeries 10 `shouldBe` Nothing
+      emaForSeries getEodSeries 10 `shouldBe` Nothing
     it "does not return Nothing when there are sufficient Elements" $ do
-      ema getEodSeries 1 `shouldNotBe` Nothing
+      emaForSeries getEodSeries 1 `shouldNotBe` Nothing
     it "calculates the EMA given a series of sufficient length" $ do
-      ema getEodSeries 5 `shouldBe` Just 23.95061728395062
+      emaForSeries getEodSeries 5 `shouldBe` Just 23.95061728395062
