@@ -14,7 +14,6 @@ data Date = Date {
   year  ::  Integer
 } deriving Generic
 
-
 data EndOfDayData = EndOfDayData {
   id                      :: Integer,
   assetId                 :: Integer,

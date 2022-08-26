@@ -1,5 +1,4 @@
 {-# LANGUAGE FlexibleInstances #-}
-
 module Arithmetic where
 
 import Data.Maybe
@@ -28,7 +27,6 @@ instance Mean [EndOfDayData] where
 class SimpleMovingAverage item where
   sma :: item -> Double
 
-
 sumClosePricePoint :: [EndOfDayData] -> Double
 sumClosePricePoint [] = 0
 sumClosePricePoint (x:xs) = close x + sumClosePricePoint xs
@@ -42,15 +40,15 @@ class ExponentialMovingAverage item where
 instance ExponentialMovingAverage [EndOfDayData] where
   ema items numberOfDays
       | (length items) < (fromIntegral $ numberOfDays * 2) = Nothing
-      | otherwise = Just $ innerEma series initialEma (emaMultiplier numberOfDays)
+      | otherwise = (innerEma series initialEma (emaMultiplier numberOfDays))
           where
-            series = (drop (numberOfDays+1) (drop ((length items) - numberOfDays*2) items))
+            series = (drop (numberOfDays + 1) (drop ((length items) - numberOfDays*2) items))
             initialEma = (sma (take numberOfDays (drop ((length items) - numberOfDays*2) items)))
-            
 
 emaMultiplier :: Int -> Double
 emaMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
 
-innerEma :: [EndOfDayData] -> Double -> Double -> Double
-innerEma (x:[]) previousEma multiplier = (multiplier * close x) + (previousEma * (1 - multiplier))
+innerEma :: [EndOfDayData] -> Double -> Double -> Maybe Double
+innerEma [] _ _ = Just 0
+innerEma (x:[]) previousEma multiplier = Just $ (multiplier * close x) + (previousEma * (1 - multiplier))
 innerEma (x:xs) previousEma multiplier = innerEma xs ((multiplier * close x) + (previousEma * (1 - multiplier))) multiplier

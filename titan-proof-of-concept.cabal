@@ -30,6 +30,7 @@ library
       DataPoints
       Lib
       Market
+      MarketAdapters
   other-modules:
       Paths_titan_proof_of_concept
   hs-source-dirs:
@@ -43,6 +44,7 @@ library
 executable titan-proof-of-concept-exe
   main-is: Main.hs
   other-modules:
+      YahooClient
       Paths_titan_proof_of_concept
   hs-source-dirs:
       app
