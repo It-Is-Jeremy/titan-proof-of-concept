@@ -50,5 +50,8 @@ calculateMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
 
 generateEma :: [EndOfDayData] -> Double -> Double -> Maybe Double
 generateEma [] _ _ = Just 0
-generateEma (x:[]) previousEma multiplier = Just $ (multiplier * close x) + (previousEma * (1 - multiplier))
-generateEma (x:xs) previousEma multiplier = generateEma xs ((multiplier * close x) + (previousEma * (1 - multiplier))) multiplier
+generateEma (x:[]) previousEma multiplier = Just $ ema x previousEma multiplier
+generateEma (x:xs) previousEma multiplier = generateEma xs (ema x previousEma multiplier) multiplier
+
+ema :: EndOfDayData -> Double -> Double -> Double
+ema dataPoint previousEma multiplier = ((multiplier * close dataPoint) + (previousEma * (1 - multiplier)))
