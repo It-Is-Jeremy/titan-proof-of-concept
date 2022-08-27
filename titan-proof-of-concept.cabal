@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.6.
 --
 -- see: https://github.com/sol/hpack
 
@@ -31,6 +31,7 @@ library
       Lib
       Market
       MarketAdapters
+      Strategy
   other-modules:
       Paths_titan_proof_of_concept
   hs-source-dirs:
@@ -60,6 +61,7 @@ test-suite titan-proof-of-concept-test
   main-is: Spec.hs
   other-modules:
       ArithmeticSpec
+      StrategySpec
       Paths_titan_proof_of_concept
   hs-source-dirs:
       test
