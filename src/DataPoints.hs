@@ -9,18 +9,22 @@ module DataPoints (
 import GHC.Generics
 
 data Date = Date {
-  day   ::  Integer,
-  month ::  Integer,
-  year  ::  Integer
+  day   ::  Int,
+  month ::  Int,
+  year  ::  Int
 } deriving Generic
 
 data EndOfDayData = EndOfDayData {
-  id                      :: Integer,
-  assetId                 :: Integer,
+  id                      :: Int,
+  assetId                 :: Int,
   date                    :: Date,
   open                    :: Double,
   high                    :: Double,
   low                     :: Double,
   close                   :: Double,
-  volume                  :: Integer
+  volume                  :: Int
 } deriving Generic
+
+instance Show EndOfDayData where
+  show (EndOfDayData id assetId date open high low close volume) =
+    show close

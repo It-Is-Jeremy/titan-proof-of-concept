@@ -34,14 +34,19 @@ data Holding = Holding {
   buyPrice    :: Double
 } deriving Generic
 
+generateSignal :: Asset -> Signal
+generateSignal asset = Signal (Asset.id asset) 2 Buy
 
 executeStrategy :: [Asset] -> [Holding] -> Double -> Maybe [Signal]
-executeStrategy assets holdings availableBalance = Nothing
+executeStrategy assets holdings availableBalance
+  | (length signals) == 0 = Nothing
+  | otherwise = Just $ map generateSignal assets
+    where signals = filter hasShorterEmaCrossedAboveLongerEma assets
 
-fiftyDayEma :: [EndOfDayData] -> Maybe Double
+fiftyDayEma :: [EndOfDayData] -> Maybe [Double]
 fiftyDayEma dataPoints = emaForSeries dataPoints 50
 
-twoHundredDayEma :: [EndOfDayData] -> Maybe Double
+twoHundredDayEma :: [EndOfDayData] -> Maybe [Double]
 twoHundredDayEma dataPoints = emaForSeries dataPoints 200
 
 hasShorterEmaCrossedAboveLongerEma :: Asset -> Bool
@@ -55,18 +60,14 @@ hasShorterEmaCrossedAboveLongerEma asset =
           Nothing -> False
           Just previousShortEma ->
             case maybePreviousLongEma of
-              
-        previousShortEma < previousLongEma && currentShortEma > currentLongEma
-        where
-          previousShortEma = take 1 $ drop 2 $
-          currentShortEma = drop 1 $ shortEma
-          previousLongEma = take 1 $ drop 2 $ longEma
-          currentLongEma = drop 1 $ longEma
+              Nothing -> False
+              Just previousLongEma ->
+                (shortEma > longEma) && (previousShortEma <= previousLongEma)
   where
     maybeCurrentShortEma = fiftyDayEma (dataPoints asset)
     maybeCurrentLongEma = twoHundredDayEma (dataPoints asset)
-    maybePreviousShortEma = fiftyDayEma (take (length $ dataPoints asset)-1  (dataPoints asset))
-    maybePreviousLongEma = twoHundredDayEma (take (length $ dataPoints asset)-1  (dataPoints asset))
+    maybePreviousShortEma = fiftyDayEma (take ((length $ dataPoints asset)-1)  (dataPoints asset))
+    maybePreviousLongEma = twoHundredDayEma (take ((length $ dataPoints asset)-1)  (dataPoints asset))
 
 hasShorterEmaCrossedBelowLongerEma :: Asset -> Bool
 hasShorterEmaCrossedBelowLongerEma asset = False

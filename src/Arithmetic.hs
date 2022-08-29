@@ -24,37 +24,29 @@ getSumOfEodSeries [] = 0
 instance Mean [EndOfDayData] where
     mean eodItems = getSumOfEodSeries eodItems/((fromIntegral $ length eodItems) * 4)
 
-class SimpleMovingAverage item where
-  sma :: item -> Double
+sma :: [Double] -> Double
+sma list = (Prelude.sum list) / (fromIntegral $ length list)
 
 sumClosePricePoint :: [EndOfDayData] -> Double
 sumClosePricePoint [] = 0
 sumClosePricePoint (x:xs) = close x + sumClosePricePoint xs
 
-instance SimpleMovingAverage [EndOfDayData] where
-  sma dataPoints = sumClosePricePoint dataPoints/(fromIntegral $ length dataPoints)
+emaForSeries :: [EndOfDayData]-> Integer -> Maybe [Double]
+emaForSeries eodSeries period | (fromInteger period) > ((length eodSeries)) `div` 2 = Nothing
+                              | otherwise = Just $ ema (map close eodSeries) period
 
-class ExponentialMovingAverage item where
-  emaForSeries :: item -> Int -> Maybe Double
+ema :: [Double] -> Integer -> [Double]
+ema s period = initialEma : innerEma emaSeries period initialEma
+  where
+     series = s
+     emaSeries | period == 2 = drop 1 series
+               | otherwise = drop (((fromInteger period)-1 `quot` 2)) series
+     initialEma | period == 2 = sma $ take 1 series
+                | otherwise = sma $ take (((fromInteger period)-1) `quot` 2) series
 
-getSublistForEma :: [EndOfDayData] -> Int -> [EndOfDayData]
-getSublistForEma items numberOfDays = drop (length items - numberOfDays*2) items
-
-instance ExponentialMovingAverage [EndOfDayData] where
-  emaForSeries items numberOfDays
-      | length items < (fromIntegral $ numberOfDays * 2) = Nothing
-      | otherwise = generateEma series initialEma $ calculateMultiplier numberOfDays
-          where
-            series = drop (numberOfDays + 1) $ getSublistForEma items numberOfDays
-            initialEma = sma $ take numberOfDays $ getSublistForEma items numberOfDays
-
-calculateMultiplier :: Int -> Double
-calculateMultiplier numberOfDays = 2/(fromIntegral $ 1 + numberOfDays)
-
-generateEma :: [EndOfDayData] -> Double -> Double -> Maybe Double
-generateEma [] _ _ = Just 0
-generateEma (x:[]) previousEma multiplier = Just $ ema x previousEma multiplier
-generateEma (x:xs) previousEma multiplier = generateEma xs (ema x previousEma multiplier) multiplier
-
-ema :: EndOfDayData -> Double -> Double -> Double
-ema dataPoint prevEma multiplier = multiplier * close dataPoint + prevEma * (1 - multiplier)
+innerEma :: [Double] -> Integer -> Double -> [Double]
+innerEma [] _ _ = []
+innerEma (x:xs) period prevEma = emaValue : innerEma xs period emaValue
+  where
+    emaValue = x * (a) + ((1 - a)*(prevEma))
+    a = (2 / ((fromInteger period) + 1))
