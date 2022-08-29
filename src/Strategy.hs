@@ -51,23 +51,14 @@ twoHundredDayEma dataPoints = emaForSeries dataPoints 200
 
 hasShorterEmaCrossedAboveLongerEma :: Asset -> Bool
 hasShorterEmaCrossedAboveLongerEma asset =
-  case maybeCurrentShortEma of
+  case maybeShortEmaSeries of
     Nothing -> False
-    Just shortEma -> case maybeCurrentLongEma of
+    Just shortEma -> case maybeLongEmaSeries of
       Nothing -> False
-      Just longEma ->
-        case maybePreviousShortEma of
-          Nothing -> False
-          Just previousShortEma ->
-            case maybePreviousLongEma of
-              Nothing -> False
-              Just previousLongEma ->
-                (shortEma > longEma) && (previousShortEma <= previousLongEma)
+      Just longEma -> (shortEma!!((length shortEma)-1) > longEma!!((length longEma)-1)) && (shortEma!!((length shortEma)-2) <= longEma!!((length longEma)-2))
   where
-    maybeCurrentShortEma = fiftyDayEma (dataPoints asset)
-    maybeCurrentLongEma = twoHundredDayEma (dataPoints asset)
-    maybePreviousShortEma = fiftyDayEma (take ((length $ dataPoints asset)-1)  (dataPoints asset))
-    maybePreviousLongEma = twoHundredDayEma (take ((length $ dataPoints asset)-1)  (dataPoints asset))
+    maybeShortEmaSeries = fiftyDayEma (dataPoints asset)
+    maybeLongEmaSeries = twoHundredDayEma (dataPoints asset)
 
 hasShorterEmaCrossedBelowLongerEma :: Asset -> Bool
 hasShorterEmaCrossedBelowLongerEma asset = False
