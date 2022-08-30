@@ -34,14 +34,19 @@ data Holding = Holding {
   buyPrice            :: Double
 } deriving Generic
 
-generateSignal :: Asset -> Signal
-generateSignal asset = Signal (Asset.id asset) 2 Buy
+generateBuySignal :: Asset -> Signal
+generateBuySignal asset = Signal (Asset.id asset) 2 Buy
+
+generateSellSignal :: Asset -> Signal
+generateSellSignal asset = Signal (Asset.id asset) 2 Sell
+
 
 executeStrategy :: [Asset] -> [Holding] -> Double -> Maybe [Signal]
 executeStrategy assets holdings availableBalance
   | (length signals) == 0 = Nothing
-  | otherwise = Just $ map generateSignal assets
-    where signals = filter hasShorterEmaCrossedAboveLongerEma assets
+  | otherwise = Just $ (map generateSignal buySignals) ++ (map generateSellSignal )
+    where buySignals = filter hasShorterEmaCrossedAboveLongerEma assets
+          sellSignals = $ map (Asset.id) $ filter hasShorterEmaCrossedBelowLongerEma assets
 
 fiftyDayEma :: [EndOfDayData] -> Maybe [Double]
 fiftyDayEma dataPoints = emaForSeries dataPoints 50
