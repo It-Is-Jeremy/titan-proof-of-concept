@@ -28,10 +28,10 @@ data Order = Order {
 } deriving Generic
 
 data Holding = Holding {
-  assetId     :: Int,
-  marketName  :: String,
-  holdingQuantity    :: Int,
-  buyPrice    :: Double
+  assetId             :: Int,
+  marketName          :: String,
+  holdingQuantity     :: Int,
+  buyPrice            :: Double
 } deriving Generic
 
 generateSignal :: Asset -> Signal

@@ -32,4 +32,6 @@ spec = do
     it "Generates a buy signal when the 50 day ema crosses above the 200 day ema" $ do
       (executeStrategy [(getAssetWithPositiveCross)] [] 1000) `shouldNotBe` Nothing
     it "Generates a buy signal when the 50 day ema crosses above the 200 day ema" $ do
-          (executeStrategy [(getAssetWithPositiveCross)] [] 1000) `shouldBe` Just [(Signal 0 2 Buy)]
+      (executeStrategy [(getAssetWithPositiveCross)] [] 1000) `shouldBe` Just [(Signal 0 2 Buy)]
+    it "Generates a sell signal for asset when the 50 day ema crosses below the 200 day ema" $ do
+      (executeStrategy [(getAssetWithNegativeCross)] [(Holding 0 "ASX" 2 200)] 1000) `shouldBe` Just [(Signal 0 2 Sell)]
