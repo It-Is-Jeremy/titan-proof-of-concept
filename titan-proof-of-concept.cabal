@@ -28,7 +28,6 @@ library
       Arithmetic
       Asset
       DataPoints
-      Lib
       Market
       MarketAdapters
       Strategy

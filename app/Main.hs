@@ -1,6 +1,11 @@
 module Main (main) where
 
-import Lib
-
 main :: IO ()
-main = someFunc
+main = printDefault
+
+printDefault :: IO ()
+printDefault = do
+  putStrLn "Usage [options...]"
+  putStrLn "-e Update Strategies execution"
+  putStrLn "-b {stockid} {price} Buy stock for certain price"
+  putStrLn "-s {stockid} {price} Buy stock for certain price"
