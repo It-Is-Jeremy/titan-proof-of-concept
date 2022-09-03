@@ -43,10 +43,11 @@ generateSellSignal asset = Signal (Asset.id asset) 2 Sell
 
 executeStrategy :: [Asset] -> [Holding] -> Double -> Maybe [Signal]
 executeStrategy assets holdings availableBalance
-  | (length signals) == 0 = Nothing
-  | otherwise = Just $ (map generateSignal buySignals) ++ (map generateSellSignal )
-    where buySignals = filter hasShorterEmaCrossedAboveLongerEma assets
-          sellSignals = $ map (Asset.id) $ filter hasShorterEmaCrossedBelowLongerEma assets
+  | (length assets) == 0 = Nothing
+  | otherwise = Just $ (map generateBuySignal buySignals) ++ (map generateSellSignal sellSignals)
+    where buySignals  = filter hasShorterEmaCrossedAboveLongerEma assets
+          sellSignals = filter hasShorterEmaCrossedBelowLongerEma $ filter holdingExists assets
+          holdingExists = (\asset -> (Asset.id asset) `elem` (map Strategy.assetId holdings))
 
 fiftyDayEma :: [EndOfDayData] -> Maybe [Double]
 fiftyDayEma dataPoints = emaForSeries dataPoints 50
