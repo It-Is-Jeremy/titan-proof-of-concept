@@ -14,7 +14,7 @@ data Signal = Signal {
   signalAssetId       :: Int,
   signalQuantity      :: Int,
   signalType          :: OrderType,
-  signalPrice         :: Double,
+  signalPrice         :: Double
 } deriving (Generic, Show, Eq)
 
 
@@ -36,10 +36,12 @@ data Holding = Holding {
 } deriving Generic
 
 generateBuySignal :: Asset -> Signal
-generateBuySignal asset = Signal (Asset.id asset) 2 Buy
+generateBuySignal asset = Signal (Asset.id asset) 2 Buy assetPrice
+  where assetPrice = close $ last $ dataPoints asset
 
 generateSellSignal :: Asset -> Signal
-generateSellSignal asset = Signal (Asset.id asset) 2 Sell
+generateSellSignal asset = Signal (Asset.id asset) 2 Sell assetPrice
+  where assetPrice = close $ last $ dataPoints asset
 
 
 executeStrategy :: [Asset] -> [Holding] -> Double -> Maybe [Signal]
