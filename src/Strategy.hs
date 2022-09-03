@@ -11,9 +11,10 @@ import Arithmetic
 data OrderType = Buy | Sell deriving (Show, Eq)
 
 data Signal = Signal {
-  relevantAssetId     :: Int,
-  quantity            :: Int,
-  signalType          :: OrderType
+  signalAssetId       :: Int,
+  signalQuantity      :: Int,
+  signalType          :: OrderType,
+  signalPrice         :: Double,
 } deriving (Generic, Show, Eq)
 
 
