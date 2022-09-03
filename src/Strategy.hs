@@ -17,7 +17,6 @@ data Signal = Signal {
   signalPrice         :: Double
 } deriving (Generic, Show, Eq)
 
-
 data OrderFulfilmentStatus = Unfulfilled | Fulfilled | Partial
 
 data Order = Order {
@@ -42,7 +41,6 @@ generateBuySignal asset = Signal (Asset.id asset) 2 Buy assetPrice
 generateSellSignal :: Asset -> Signal
 generateSellSignal asset = Signal (Asset.id asset) 2 Sell assetPrice
   where assetPrice = close $ last $ dataPoints asset
-
 
 executeStrategy :: [Asset] -> [Holding] -> Double -> Maybe [Signal]
 executeStrategy assets holdings availableBalance
