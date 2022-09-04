@@ -11,6 +11,7 @@ data Asset = Asset {
     id          :: Int,
     name        :: String,
     marketName  :: String,
+    assetType   :: String,
     dataPoints  :: [EndOfDayData]
 } deriving Generic
 

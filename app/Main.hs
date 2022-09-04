@@ -1,7 +1,9 @@
 module Main (main) where
+
 import System.Environment
 import Data.List
 import Data.Maybe
+import AsxClient
 
 data Action = ExecuteAction | BuyAction | SellAction
 
@@ -11,6 +13,7 @@ main = do
   if (length args) == 1 || (length args) == 3
     then performAction $ determineAction (args!!0)
     else printDefault
+  getListedCompanies
 
 performAction :: Maybe Action -> IO ()
 performAction Nothing = printDefault

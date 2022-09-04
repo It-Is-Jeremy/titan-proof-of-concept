@@ -31,7 +31,7 @@ getStagnantPriceSeriesFor :: Int -> Double -> [EndOfDayData]
 getStagnantPriceSeriesFor n price = take n (repeat (EndOfDayData 0 0 (Date 0 0 0) price price price price 10000))
 
 getAsset :: Asset
-getAsset = Asset 0 "NAB" "ASX" ((getStagnantPriceSeriesFor 400 100) ++ (getStagnantPriceSeriesFor 25 2000))
+getAsset = Asset 0 "NAB" "ASX" "" ((getStagnantPriceSeriesFor 400 100) ++ (getStagnantPriceSeriesFor 25 2000))
 
 getHolding :: Holding
 getHolding = Holding 0 "ASX" 0 0

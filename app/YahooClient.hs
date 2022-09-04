@@ -1,2 +1,1 @@
 module YahooClient where
-
