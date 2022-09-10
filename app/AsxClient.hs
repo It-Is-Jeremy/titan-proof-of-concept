@@ -22,7 +22,7 @@ import Data.List.Utils (replace)
 
 import Asset
 
-getListedCompanies :: IO [Company]
+getListedCompanies :: IO [AsxListedCompany]
 getListedCompanies = runReq defaultHttpConfig $ do
   response <- req
                 GET

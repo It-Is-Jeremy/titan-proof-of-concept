@@ -4,16 +4,17 @@ import System.Environment
 import Data.List
 import Data.Maybe
 import AsxClient
+import Control.Monad
 
 data Action = ExecuteAction | BuyAction | SellAction
 
 main :: IO ()
 main = do
   args <- getArgs
+  companies <- getListedCompanies
   if (length args) == 1 || (length args) == 3
     then performAction $ determineAction (args!!0)
     else printDefault
-  getListedCompanies
 
 performAction :: Maybe Action -> IO ()
 performAction Nothing = printDefault
