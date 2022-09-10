@@ -15,5 +15,13 @@ data Asset = Asset {
     dataPoints  :: [EndOfDayData]
 } deriving Generic
 
+
+data AsxListedCompany = AsxListedCompany {
+  companyCode                  :: String,
+  companyName                  :: String,
+  companyDateOpened            :: String,
+  companyIndustryType          :: String
+} deriving (Eq,Generic, Show)
+
 instance Show Asset where
   show asset = "Asset " ++ show (Asset.id asset) ++ " " ++ name asset ++ " " ++ marketName asset ++ " " ++ show (dataPoints asset) ++ " data points"
