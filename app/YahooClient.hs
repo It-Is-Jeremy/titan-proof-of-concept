@@ -5,19 +5,16 @@ import Network.HTTP.Req
 
 import Data.Aeson
 import Data.Maybe
+import Data.Text
 
 import Asset
 
---getAssets :: [AsxListedCompany] -> IO [Asset]
---getAssets =
-  --  liftIO $ print (responseStatusCode response :: Int)
-
---getAsset :: AsxListedCompany -> IO [Asset]
---getAsset company = runReq defaultHttpConfig $ do
-  --    response <- req
-    --                GET
-  --                  (https "query1.finance.yahoo.com" /: "v4" /: "finance" /: "chart" /: (companyCode company) + ".AX")
-  --                  NoReqBody
-  --                  jsonResponse
-  --                  mempty
-  --    return Asset 0 (companyCode company) "ASX" ()
+getAsset :: AsxListedCompany -> IO Asset
+getAsset company = do
+      response <- runReq defaultHttpConfig $ req
+                    GET
+                    (https "query1.finance.yahoo.com" /: "v4" /: "finance" /: "chart" /: pack $ (companyCode company) + ".AX")
+                    NoReqBody
+                    jsonResponse
+                    mempty
+      return $ Asset 0 (companyCode company) "ASX" "" []

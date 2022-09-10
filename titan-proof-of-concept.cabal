@@ -64,6 +64,7 @@ executable titan-proof-of-concept-exe
     , req
     , split
     , titan-proof-of-concept
+    , text
   default-language: Haskell2010
 
 test-suite titan-proof-of-concept-test

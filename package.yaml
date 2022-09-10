@@ -27,6 +27,7 @@ dependencies:
 - bytestring
 - split
 - MissingH
+- text
 
 ghc-options:
 - -Wall
