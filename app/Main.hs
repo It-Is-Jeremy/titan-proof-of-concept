@@ -3,8 +3,11 @@ module Main (main) where
 import System.Environment
 import Data.List
 import Data.Maybe
+import Control.Monad.IO.Class
+
 import AsxClient
-import Control.Monad
+import YahooClient
+
 
 data Action = ExecuteAction | BuyAction | SellAction
 
@@ -12,9 +15,12 @@ main :: IO ()
 main = do
   args <- getArgs
   companies <- getListedCompanies
+  assets <- mapM retrieveAssetWithWait companies
   if (length args) == 1 || (length args) == 3
     then performAction $ determineAction (args!!0)
     else printDefault
+
+
 
 performAction :: Maybe Action -> IO ()
 performAction Nothing = printDefault

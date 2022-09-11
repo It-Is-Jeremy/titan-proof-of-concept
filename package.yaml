@@ -28,6 +28,7 @@ dependencies:
 - split
 - MissingH
 - text
+- transformers
 
 ghc-options:
 - -Wall
