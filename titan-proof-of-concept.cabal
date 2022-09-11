@@ -44,6 +44,8 @@ library
     , hspec
     , req
     , split
+    , text
+    , transformers
   default-language: Haskell2010
 
 executable titan-proof-of-concept-exe
@@ -63,8 +65,9 @@ executable titan-proof-of-concept-exe
     , hspec
     , req
     , split
-    , titan-proof-of-concept
     , text
+    , titan-proof-of-concept
+    , transformers
   default-language: Haskell2010
 
 test-suite titan-proof-of-concept-test
@@ -85,5 +88,7 @@ test-suite titan-proof-of-concept-test
     , hspec
     , req
     , split
+    , text
     , titan-proof-of-concept
+    , transformers
   default-language: Haskell2010

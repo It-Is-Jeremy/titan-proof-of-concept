@@ -18,6 +18,71 @@ import Data.List.Utils (replace)
 
 import Asset
 
+data YahooAssetData = YahooAssetData {
+  chart :: YahooChart
+}
+
+data YahooChart = YahooChart {
+  result :: ,
+  error  :: String
+}
+
+data YahooAssetDataPoint = YahooAssetDataPoint {
+  meta :: YahooAssetMetaData,
+  timestamp :: [Int],
+  indicators :: ,
+}
+
+data YahooAssetMetaData = YahooAssetMetaData {
+  currency                :: String,
+  symbol                  :: String,
+  exchangeName            :: String,
+  instrumentType          :: String,
+  firstTradeDate          :: Int,
+  regularMarketTime       :: Int,
+  gmtoffset               :: Int,
+  timezone                :: String,
+  exchangeTimezoneName    :: String,
+  regularMarketPrice      :: Float,
+  chartPreviousClose      :: Float,
+  priceHint               :: Int,
+  currentTradingPeriod    :: TradingPeriods,
+  dataGranularity         :: String,
+  range                   :: String,
+  validRanges             :: [String]
+}
+
+data YahooAssetIndicators = YahooAssetIndicators {
+    quote       :: [YahooAssetQuote],
+    adjclose    :: [YahooAdjClose]
+}
+
+data YahooAssetAdjClose = YahooAssetAdjClose {
+  adjclose      :: [Float]
+}
+
+data YahooAssetQuote = YahooAssetQuote {
+  low         :: [Float],
+  volume      :: [Int],
+  close       :: [Float],
+  open        :: [Float],
+  high        :: [Float],
+}
+
+
+data TradingPeriods = TradingPeriods {
+  pre       :: TradingPeriod,
+  regular   :: TradingPeriod,
+  post      :: TradingPeriod
+}
+
+data TradingPeriod = TradingPeriod {
+  timezone  :: String,
+  start     :: Int,
+  end       :: Int,
+  gmtoffset :: Int
+}
+
 retrieveAssetWithWait :: AsxListedCompany -> IO Asset
 retrieveAssetWithWait company = do
   asset <- getAsset company `Ex.catch` handler
