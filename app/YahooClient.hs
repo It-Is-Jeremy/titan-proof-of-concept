@@ -23,14 +23,14 @@ data YahooAssetData = YahooAssetData {
 }
 
 data YahooChart = YahooChart {
-  result :: ,
+  result :: YahooAssetDataPoint,
   error  :: String
 }
 
 data YahooAssetDataPoint = YahooAssetDataPoint {
   meta :: YahooAssetMetaData,
   timestamp :: [Int],
-  indicators :: ,
+  indicators :: YahooAssetIndicators
 }
 
 data YahooAssetMetaData = YahooAssetMetaData {
@@ -54,11 +54,11 @@ data YahooAssetMetaData = YahooAssetMetaData {
 
 data YahooAssetIndicators = YahooAssetIndicators {
     quote       :: [YahooAssetQuote],
-    adjclose    :: [YahooAdjClose]
+    adjclose    :: [YahooAssetAdjClose]
 }
 
 data YahooAssetAdjClose = YahooAssetAdjClose {
-  adjclose      :: [Float]
+  adjClose      :: [Float]
 }
 
 data YahooAssetQuote = YahooAssetQuote {
@@ -66,7 +66,7 @@ data YahooAssetQuote = YahooAssetQuote {
   volume      :: [Int],
   close       :: [Float],
   open        :: [Float],
-  high        :: [Float],
+  high        :: [Float]
 }
 
 
@@ -77,10 +77,10 @@ data TradingPeriods = TradingPeriods {
 }
 
 data TradingPeriod = TradingPeriod {
-  timezone  :: String,
+  timeZone  :: String,
   start     :: Int,
   end       :: Int,
-  gmtoffset :: Int
+  gmtOffset :: Int
 }
 
 retrieveAssetWithWait :: AsxListedCompany -> IO Asset
