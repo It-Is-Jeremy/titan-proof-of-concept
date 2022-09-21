@@ -37,7 +37,14 @@ getListedCompanies = runReq defaultHttpConfig $ do
   return companies
 
 parseListedCompaniesCSV :: ByteString -> [AsxListedCompany]
-parseListedCompaniesCSV string = Prelude.map (fromJust) $ Prelude.filter (/=Nothing) $ Prelude.map (generateCompany) $ Prelude.map (splitOn ",") $ Prelude.map (replace "\"" "")$ Prelude.drop 1 $ splitOn "\n" $ bsToString string
+parseListedCompaniesCSV string = Prelude.map (fromJust)
+ . Prelude.filter (/=Nothing)
+ . Prelude.map (generateCompany)
+ . Prelude.map (splitOn ",")
+ . Prelude.map (replace "\"" "")
+ . Prelude.drop 1
+ $ splitOn "\n"
+ $ bsToString string
 
 generateCompany :: [String] -> Maybe AsxListedCompany
 generateCompany c | (Prelude.length c) == 5 = Just $ AsxListedCompany (c!!0) (c!!1) (c!!2) (c!!3)
