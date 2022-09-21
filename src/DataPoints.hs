@@ -27,4 +27,4 @@ data EndOfDayData = EndOfDayData {
 
 instance Show EndOfDayData where
   show (EndOfDayData id assetId date open high low close volume) =
-    show close
+    show open

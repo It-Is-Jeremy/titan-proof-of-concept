@@ -14,8 +14,6 @@ data Action = ExecuteAction | BuyAction | SellAction
 main :: IO ()
 main = do
   args <- getArgs
-  companies <- getListedCompanies
-  assets <- mapM retrieveAssetWithWait companies
   if (length args) == 1 || (length args) == 3
     then performAction $ determineAction (args!!0)
     else printDefault
@@ -24,9 +22,15 @@ main = do
 
 performAction :: Maybe Action -> IO ()
 performAction Nothing = printDefault
-performAction (Just ExecuteAction) = putStrLn "ExecuteAction"
+performAction (Just ExecuteAction) = executeStrategy
 performAction (Just BuyAction) = putStrLn "BuyAction"
 performAction (Just SellAction) = putStrLn "SellAction"
+
+executeStrategy :: IO ()
+executeStrategy = do
+  companies <- getListedCompanies
+  assets <- mapM retrieveAssetWithWait companies
+  putStrLn "ExecuteAction"
 
 
 determineAction :: String -> Maybe Action
